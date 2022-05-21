@@ -17,22 +17,22 @@ let requiredRange3 = [200, null];
 const showCoursesByRange = (range: number[]) => {
     let filteredCourses = [] as TCourse[];
 
-    // check if range is right
-    if (range[1] < range[0]) {
-        throw new Error('Impossible range!');
-    };
-
     courses.map((course) => {
-        // replace null to 'conditional infinity'
-        range[1] = range[1] || Number.MAX_SAFE_INTEGER;
-        course.prices[1] = course.prices[1] || Number.MAX_SAFE_INTEGER;
+        // replace null to Infinity
+        range[1] = range[1] || Infinity;
+        course.prices[1] = course.prices[1] || Infinity;
+
+        // check if the range is right
+        if (range[1] < range[0]) {
+            throw new Error('Impossible range!');
+        };
 
         // some filtering
         if (range[0] <= course.prices[1] && range[1] >= course.prices[0]) {
 
             // replace back to null
-            if (range[1] === Number.MAX_SAFE_INTEGER) range[1] = null;
-            if (course.prices[1] === Number.MAX_SAFE_INTEGER) course.prices[1] = null;
+            if (range[1] === Infinity) range[1] = null;
+            if (course.prices[1] === Infinity) course.prices[1] = null;
 
             // push to temp array
             filteredCourses.push(course);
