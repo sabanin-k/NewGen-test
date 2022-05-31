@@ -14,35 +14,26 @@ let requiredRange2 = [100, 350];
 let requiredRange3 = [200, null];
 
 
-const showCoursesByRange = (range: number[]) => {
-    let filteredCourses = [] as TCourse[];
-
-    courses.map((course) => {
+const showCoursesByRange = (range: number[], courses: ICourse[]) => {
+    return courses.filter((course) => {
         // replace null to Infinity
         range[1] = range[1] || Infinity;
         course.prices[1] = course.prices[1] || Infinity;
 
-        // check if the range is right
-        if (range[1] < range[0]) {
-            throw new Error('Impossible range!');
-        };
-
-        // some filtering
+        // filtering logic
         if (range[0] <= course.prices[1] && range[1] >= course.prices[0]) {
 
             // replace back to null
             if (range[1] === Infinity) range[1] = null;
             if (course.prices[1] === Infinity) course.prices[1] = null;
 
-            // push to temp array
-            filteredCourses.push(course);
+            return course;
         }
     })
-
-    return filteredCourses;
 };
 
-const sortCoursesByPrice = (array: TCourse[]) => {
+
+const sortCoursesByPrice = (array: ICourse[]) => {
     // sort by first number in range
     return array.sort((x, y) => {
         return x.prices[0] - y.prices[0];
@@ -50,7 +41,7 @@ const sortCoursesByPrice = (array: TCourse[]) => {
 };
 
 
-type TCourse = {
+interface ICourse{
     name: string
     prices: number[]
 };
